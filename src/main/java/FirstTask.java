@@ -16,8 +16,8 @@ public class FirstTask extends UI {
         Grid<Data> grid = new Grid<>();
         grid.setItems(dataList);
         grid.addColumn(Data::getId).setCaption("Id");
-        grid.addColumn(Data::getData1).setCaption("Name");
-        grid.addColumn(Data::getData2).setCaption("Year of birth");
+        grid.addColumn(Data::getData1).setCaption("Data1");
+        grid.addColumn(Data::getData2).setCaption("Data2");
 
         layout.addComponents(grid);
         setContent(layout);
