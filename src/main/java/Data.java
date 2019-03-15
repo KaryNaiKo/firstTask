@@ -3,6 +3,9 @@ public class Data {
     private String data1;
     private String data2;
 
+    public Data() {
+    }
+
     public Data(int id, String data1, String data2) {
         this.id = id;
         this.data1 = data1;
