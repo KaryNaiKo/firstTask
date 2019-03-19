@@ -4,12 +4,11 @@ import com.vaadin.navigator.View;
 import com.vaadin.ui.*;
 import com.vaadin.ui.components.grid.ItemClickListener;
 import model.Data;
-import repository.JDBCUtil;
 
 import java.util.List;
 
 public class MainView extends VerticalLayout implements View {
-    private  FirstTask main;
+    private FirstTask main;
 
     public MainView(FirstTask main) {
         this.main = main;

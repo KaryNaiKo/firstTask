@@ -4,11 +4,13 @@ import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.navigator.Navigator;;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinRequest;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.*;
 import org.apache.shiro.subject.Subject;
 import repository.JDBCUtil;
 import org.slf4j.bridge.SLF4JBridgeHandler;
 
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 @PreserveOnRefresh
@@ -31,6 +33,8 @@ public class FirstTask extends UI {
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
+        VaadinSession.getCurrent().getSession().setMaxInactiveInterval((int) TimeUnit.MINUTES.toSeconds(5));
+
         navigator = new Navigator(this, this);
 
         LoginView loginView = new LoginView(this);
