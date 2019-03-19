@@ -7,11 +7,12 @@ import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.text.IniRealm;
 import org.apache.shiro.subject.Subject;
 import org.apache.shiro.util.Factory;
+import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
 
 public class SecurityUtil {
     static {
 //        IniRealm iniRealm = new IniRealm("classpath:shiro.ini");
-//        DefaultSecurityManager securityManager = new DefaultSecurityManager(iniRealm);
+//        DefaultSecurityManager securityManager = new DefaultWebSecurityManager(iniRealm);
 //        SecurityUtils.setSecurityManager(securityManager);
 
 //        IniSecurityManagerFactory factory = new IniSecurityManagerFactory("classpath:shiro.ini");

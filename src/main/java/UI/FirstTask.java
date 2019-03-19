@@ -1,13 +1,24 @@
 package UI;
 
+import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.navigator.Navigator;;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.ui.*;
 import org.apache.shiro.subject.Subject;
 import repository.JDBCUtil;
+import org.slf4j.bridge.SLF4JBridgeHandler;
 
+import java.util.logging.Logger;
+
+@PreserveOnRefresh
 public class FirstTask extends UI {
+    static {
+        SLF4JBridgeHandler.install();
+    }
+
+    private final static Logger logger = Logger.getLogger(FirstTask.class.getName());
+
     private JDBCUtil db = new JDBCUtil();
     private Navigator navigator;
 
