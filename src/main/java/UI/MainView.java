@@ -1,11 +1,10 @@
 package UI;
 
 import com.vaadin.navigator.View;
-import com.vaadin.ui.Grid;
-import com.vaadin.ui.Notification;
-import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.*;
 import com.vaadin.ui.components.grid.ItemClickListener;
 import model.Data;
+import repository.JDBCUtil;
 
 import java.util.List;
 
@@ -19,6 +18,17 @@ public class MainView extends VerticalLayout implements View {
 
     private void init() {
         setSizeFull();
+        setSpacing(false);
+
+        Button send = new Button("Logout");
+        send.addClickListener((Button.ClickListener) event -> {
+            SecurityUtil.getCurrentUser().logout();
+            main.getNavigator().navigateTo(FirstTask.LOGIN);
+        });
+
+        addComponent(send);
+        setComponentAlignment(send, Alignment.TOP_RIGHT);
+        setExpandRatio(send, 0.1f);
 
         List<Data> dataList = main.getDb().getData();
 
@@ -33,10 +43,23 @@ public class MainView extends VerticalLayout implements View {
 
         grid.addItemClickListener((ItemClickListener<Data>) event -> {
             if (event.getMouseEventDetails().isDoubleClick()) {
-                Notification.show("Value: " + event.getItem());
+                // Create a sub-window and set the content
+                Window subWindow = new Window("Sub-window");
+                VerticalLayout subContent = new VerticalLayout();
+                subWindow.setContent(subContent);
+
+                // Put some components in it
+                subContent.addComponent(new Label("Value: " + event.getItem()));
+
+                // Center it in the browser window
+                subWindow.center();
+
+                // Open it in the UI
+                main.addWindow(subWindow);
             }
         });
 
         addComponent(grid);
+        setExpandRatio(grid, 0.9f);
     }
 }

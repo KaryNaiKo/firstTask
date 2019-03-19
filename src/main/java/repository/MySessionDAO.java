@@ -1,4 +1,4 @@
-package UI;
+package repository;
 
 import org.apache.shiro.session.Session;
 import org.apache.shiro.session.UnknownSessionException;
