@@ -21,7 +21,7 @@ public class FirstTask extends UI {
 
     private final static Logger logger = Logger.getLogger(FirstTask.class.getName());
 
-    private JDBCUtil db = new JDBCUtil();
+    private JDBCUtil db = JDBCUtil.getInstance();
     private Navigator navigator;
 
     protected static final String MAINVIEW = "main";

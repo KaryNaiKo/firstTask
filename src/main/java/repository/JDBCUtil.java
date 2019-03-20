@@ -18,7 +18,9 @@ public class JDBCUtil {
     private JdbcTemplate jdbcTemplate;
     private RowMapper<Data> rowMapper;
 
-    public JDBCUtil() {
+    private static JDBCUtil instance;
+
+    private JDBCUtil() {
         init();
     }
 
@@ -33,6 +35,17 @@ public class JDBCUtil {
         rowMapper = BeanPropertyRowMapper.newInstance(Data.class);
     }
 
+    public static JDBCUtil getInstance() {
+        if (instance == null) {
+            synchronized (JDBCUtil.class) {
+                if (instance == null) {
+                    instance = new JDBCUtil();
+                }
+            }
+        }
+
+        return instance;
+    }
 
     public List<Data> getData() {
         return jdbcTemplate.query("SELECT * FROM data", rowMapper);
