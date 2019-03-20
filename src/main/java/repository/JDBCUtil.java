@@ -35,7 +35,7 @@ public class JDBCUtil {
         rowMapper = BeanPropertyRowMapper.newInstance(Data.class);
     }
 
-    public static JDBCUtil getInstance() {
+    public JDBCUtil getInstance() {
         if (instance == null) {
             synchronized (JDBCUtil.class) {
                 if (instance == null) {
