@@ -47,7 +47,7 @@ public class JDBCUtil {
         return instance;
     }
 
-    public List<Data> getData() {
+    public synchronized List<Data> getData() {
         return jdbcTemplate.query("SELECT * FROM data", rowMapper);
     }
 }
