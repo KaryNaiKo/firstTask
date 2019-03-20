@@ -37,8 +37,8 @@ public class FirstTask extends UI {
 
         navigator = new Navigator(this, this);
 
-        LoginView loginView = new LoginView(this);
-        MainView mainView = new MainView(this);
+        LoginView loginView = new LoginView();
+        MainView mainView = new MainView();
         navigator.addView(LOGIN, loginView);
         navigator.addView(MAINVIEW, mainView);
         navigator.setErrorView(loginView);

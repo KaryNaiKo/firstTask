@@ -7,10 +7,8 @@ import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
 
 public class LoginView extends VerticalLayout implements View {
-    private FirstTask main;
 
-    public LoginView(FirstTask main) {
-        this.main = main;
+    public LoginView() {
         init();
     }
 
@@ -33,7 +31,7 @@ public class LoginView extends VerticalLayout implements View {
 
                 try {
                     currentUser.login(token);
-                    main.getNavigator().navigateTo(main.MAINVIEW);
+                    this.getUI().getNavigator().navigateTo(FirstTask.MAINVIEW);
                 } catch (AuthenticationException e) {
                     Notification.show("Incorrect data");
                 }

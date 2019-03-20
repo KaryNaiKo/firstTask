@@ -5,14 +5,14 @@ import com.vaadin.server.Page;
 import com.vaadin.ui.*;
 import com.vaadin.ui.components.grid.ItemClickListener;
 import model.Data;
+import repository.JDBCUtil;
 
 import java.util.List;
 
 public class MainView extends VerticalLayout implements View {
-    private FirstTask main;
+    private JDBCUtil db = JDBCUtil.getInstance();
 
-    public MainView(FirstTask main) {
-        this.main = main;
+    public MainView() {
         init();
     }
 
@@ -23,7 +23,7 @@ public class MainView extends VerticalLayout implements View {
         Button send = new Button("Logout");
         send.addClickListener((Button.ClickListener) event -> {
             SecurityUtil.getCurrentUser().logout();
-            main.getNavigator().navigateTo(FirstTask.LOGIN);
+            this.getUI().getNavigator().navigateTo(FirstTask.LOGIN);
             Page.getCurrent().reload();
         });
 
@@ -31,7 +31,7 @@ public class MainView extends VerticalLayout implements View {
         setComponentAlignment(send, Alignment.TOP_RIGHT);
         setExpandRatio(send, 0.1f);
 
-        List<Data> dataList = main.getDb().getData();
+        List<Data> dataList = db.getData();
 
         Grid<Data> grid = new Grid<>();
         grid.setItems(dataList);
@@ -56,7 +56,7 @@ public class MainView extends VerticalLayout implements View {
                 subWindow.center();
 
                 // Open it in the UI
-                main.addWindow(subWindow);
+                this.getUI().addWindow(subWindow);
             }
         });
 
