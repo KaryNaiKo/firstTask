@@ -1,6 +1,7 @@
 package UI;
 
 import com.vaadin.navigator.View;
+import com.vaadin.server.Page;
 import com.vaadin.ui.*;
 import com.vaadin.ui.components.grid.ItemClickListener;
 import model.Data;
@@ -23,6 +24,7 @@ public class MainView extends VerticalLayout implements View {
         send.addClickListener((Button.ClickListener) event -> {
             SecurityUtil.getCurrentUser().logout();
             main.getNavigator().navigateTo(FirstTask.LOGIN);
+            Page.getCurrent().reload();
         });
 
         addComponent(send);
