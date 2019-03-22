@@ -2,13 +2,13 @@ package auth;
 
 
 import com.example.hibernate.entity.User;
-import dao.UserDAO;
+import com.example.hibernate.dao.UserDAO;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 
 
 public class TestAuth implements Authenticator {
-    private UserDAO userDAO = new UserDAO();
+    private UserDAO userDAO = UserDAO.getInstance();
 
     @Override
     public AuthenticationInfo authenticate(AuthenticationToken authenticationToken) throws AuthenticationException {

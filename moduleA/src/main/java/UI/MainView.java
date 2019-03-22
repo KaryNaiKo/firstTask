@@ -5,13 +5,13 @@ import com.vaadin.navigator.View;
 import com.vaadin.server.Page;
 import com.vaadin.ui.*;
 import com.vaadin.ui.components.grid.ItemClickListener;
-import dao.DataDAO;
+import com.example.hibernate.dao.DataDAO;
 
 
 import java.util.List;
 
 public class MainView extends VerticalLayout implements View {
-    private DataDAO dataDAO = new DataDAO();
+    private DataDAO dataDAO = DataDAO.getInstance();
 
     public MainView() {
         init();

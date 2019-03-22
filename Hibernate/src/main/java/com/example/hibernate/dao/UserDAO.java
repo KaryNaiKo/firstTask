@@ -1,4 +1,4 @@
-package dao;
+package com.example.hibernate.dao;
 
 import com.example.hibernate.HibernateSessionFactoryUtil;
 import com.example.hibernate.entity.User;
@@ -6,9 +6,22 @@ import org.hibernate.SessionFactory;
 
 public class UserDAO {
     private SessionFactory sessionFactory;
+    private static UserDAO instance;
 
-    public UserDAO() {
+    private UserDAO() {
         sessionFactory = HibernateSessionFactoryUtil.getSessionFactory();
+    }
+
+    public static UserDAO getInstance() {
+        if (instance == null) {
+            synchronized (DataDAO.class) {
+                if (instance == null) {
+                    instance = new UserDAO();
+                }
+            }
+        }
+
+        return instance;
     }
 
     public User authUser(String login, String password) {
