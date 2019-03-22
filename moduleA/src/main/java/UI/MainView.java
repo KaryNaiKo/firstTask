@@ -1,16 +1,17 @@
 package UI;
 
+import com.example.hibernate.entity.Data;
 import com.vaadin.navigator.View;
 import com.vaadin.server.Page;
 import com.vaadin.ui.*;
 import com.vaadin.ui.components.grid.ItemClickListener;
-import model.Data;
-import repository.JDBCUtil;
+import dao.DataDAO;
+
 
 import java.util.List;
 
 public class MainView extends VerticalLayout implements View {
-    private JDBCUtil db = JDBCUtil.getInstance();
+    private DataDAO dataDAO = new DataDAO();
 
     public MainView() {
         init();
@@ -31,7 +32,7 @@ public class MainView extends VerticalLayout implements View {
         setComponentAlignment(send, Alignment.TOP_RIGHT);
         setExpandRatio(send, 0.1f);
 
-        List<Data> dataList = db.getData();
+        List<Data> dataList = dataDAO.getData();
 
         Grid<Data> grid = new Grid<>();
         grid.setItems(dataList);

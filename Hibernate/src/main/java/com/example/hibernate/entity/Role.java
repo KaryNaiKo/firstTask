@@ -1,4 +1,4 @@
-package model;
+package com.example.hibernate.entity;
 
 public enum Role {
     ROLE_USER,

@@ -1,12 +1,14 @@
 package auth;
 
-import model.User;
+
+import com.example.hibernate.entity.User;
+import dao.UserDAO;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.SimplePrincipalCollection;
-import repository.JDBCUtil;
+
 
 public class TestAuth implements Authenticator {
-    private JDBCUtil jdbcUtil = JDBCUtil.getInstance();
+    private UserDAO userDAO = new UserDAO();
 
     @Override
     public AuthenticationInfo authenticate(AuthenticationToken authenticationToken) throws AuthenticationException {
@@ -19,7 +21,7 @@ public class TestAuth implements Authenticator {
         User user = null;
         SimpleAuthenticationInfo ret = new SimpleAuthenticationInfo();
         try {
-            user = jdbcUtil.authUser(login, password);
+            user = userDAO.authUser(login, password);
         } catch (Exception e) {
         }
         ret.setPrincipals(new SimplePrincipalCollection(user, "client"));

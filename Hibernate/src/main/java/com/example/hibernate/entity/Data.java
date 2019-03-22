@@ -1,11 +1,20 @@
-package model;
+package com.example.hibernate.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "data")
 public class Data {
+    @Id
     private int id;
+
+    @Column(name = "data1", nullable = false)
     private String data1;
+
+    @Column(name = "data2", nullable = false)
     private String data2;
 
     public Data() {

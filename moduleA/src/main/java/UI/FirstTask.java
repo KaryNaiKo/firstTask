@@ -6,6 +6,7 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.*;
 import com.vaadin.ui.UI;
+import dao.UserDAO;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.config.IniSecurityManagerFactory;
 import org.apache.shiro.mgt.SecurityManager;
@@ -13,7 +14,6 @@ import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.env.EnvironmentLoaderListener;
 import org.apache.shiro.web.servlet.ShiroFilter;
 import org.slf4j.bridge.SLF4JBridgeHandler;
-import repository.JDBCUtil;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -26,10 +26,7 @@ import java.io.IOException;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
-import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
-
-;
 
 @PreserveOnRefresh
 public class FirstTask extends UI {
@@ -39,15 +36,10 @@ public class FirstTask extends UI {
 
     private final static Logger logger = Logger.getLogger(FirstTask.class.getName());
 
-    private JDBCUtil db = JDBCUtil.getInstance();
     private Navigator navigator;
 
     protected static final String MAINVIEW = "main";
     protected static final String LOGIN = "login";
-
-    public JDBCUtil getDb() {
-        return db;
-    }
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
@@ -94,7 +86,7 @@ public class FirstTask extends UI {
             SecurityUtils.setSecurityManager(securityManager);
             EnvironmentLoaderListener ell = new EnvironmentLoaderListener();
             ell.initEnvironment(this.getServletContext());
-            filter = new org.apache.shiro.web.servlet.ShiroFilter();
+            filter = new ShiroFilter();
             filter.setServletContext(this.getServletContext());
             try {
                 filter.init();
