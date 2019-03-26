@@ -11,6 +11,7 @@
 
     <artifactId>moduleA</artifactId>
     <packaging>war</packaging>
+    <name>Vaadin</name>
 
     <prerequisites>
         <maven>3</maven>

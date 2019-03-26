@@ -1,0 +1,46 @@
+swagger: '2.0' #version of Swagger
+info: # High Level information of API
+  description: Sample Swagger Demo #Give the description of API
+  version: 1.0.0 #API version
+  title: Data # API title
+  license: #Swagger license info
+    name: Apache 2.0
+    url: 'http://www.apache.org/licenses/LICENSE-2.0.html'
+host: localhost:8080 # Host Name
+basePath: /v1 #Basepath when there are multiple versions of API running
+tags: # Tag information for each API operation. Multiple tags for multiple API operation
+  - name: Data #Tag name
+    description: Everything about Data #Tag description of API operation
+schemes:
+  - http #security schemes
+paths:
+  '/getData': #Request Mapping path of REST API
+    get: #Request method type, GET,POST etc.
+      tags: # Refer to created tag above
+        - Data
+      summary: Find all Data #Summary
+      description: Returns a list of Data #Description of API operation
+      operationId: getData #Method name
+      produces:
+        - application/json #Response content type
+      parameters: []
+      responses: # API response
+        '200': #Successful status code
+          description: successful operation #Successful status description
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Data" #Response object details
+        '404': #Unsuccessful response code
+          description: Data not found #Unsuccessful response description
+definitions: # Object definition
+  Data: #Employee Object
+    type: object
+    properties: #Object properties
+      id: #Id attribute
+        type: integer
+        format: int64
+      data1: #Firstname attribute
+        type: string
+      data2: #Lastname attribute
+        type: string #Data type
