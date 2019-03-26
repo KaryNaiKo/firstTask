@@ -3,6 +3,7 @@ package com.example.hibernate.dao;
 import com.example.hibernate.HibernateSessionFactoryUtil;
 import com.example.hibernate.entity.User;
 import org.hibernate.SessionFactory;
+import org.hibernate.jpa.QueryHints;
 
 public class UserDAO {
     private SessionFactory sessionFactory;
@@ -28,6 +29,13 @@ public class UserDAO {
         return sessionFactory.openSession().createQuery("SELECT u FROM User u WHERE u.login=:login AND u.password=:password", User.class)
                 .setParameter("login", login)
                 .setParameter("password", password)
+                .getSingleResult();
+    }
+
+    public User authUser(String login) {
+        return sessionFactory.openSession().createQuery("SELECT u FROM User u WHERE u.login=:login", User.class)
+                .setParameter("login", login)
+                .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
                 .getSingleResult();
     }
 }
