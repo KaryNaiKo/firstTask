@@ -135,10 +135,10 @@
                         </goals>
                         <configuration>
                             <generateModels>false</generateModels>
-                            <inputSpec>src/main/resources/swagger.yaml</inputSpec>
+                            <inputSpec>${project.basedir}/src/main/resources/swagger.yaml</inputSpec>
                             <modelPackage>com.example.hibernate.entity</modelPackage>
                             <apiPackage>com.example.generatebyswagger.api</apiPackage>
-                            <ignoreFileOverride>src/main/resources/.swagger-codegen-ignore</ignoreFileOverride>
+                            <ignoreFileOverride>${project.basedir}/src/main/resources/.swagger-codegen-ignore</ignoreFileOverride>
                             <language>spring</language>
                         </configuration>
                     </execution>
