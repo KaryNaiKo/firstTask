@@ -73,6 +73,32 @@
             <artifactId>Hibernate</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+            <version>2.0.1.Final</version>
+        </dependency>
+        <dependency>
+            <groupId>org.threeten</groupId>
+            <artifactId>threetenbp</artifactId>
+            <version>1.3.1</version>
+        </dependency>
+        <dependency>
+            <groupId>com.github.joschi.jackson</groupId>
+            <artifactId>jackson-datatype-threetenbp</artifactId>
+            <version>2.6.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.9.8</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.9.8</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -101,29 +127,19 @@
             <plugin>
                 <groupId>io.swagger</groupId>
                 <artifactId>swagger-codegen-maven-plugin</artifactId>
-                <version>2.4.2</version>
+                <version>2.4.0</version>
                 <executions>
                     <execution>
                         <goals>
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <configOptions>
-                                <dateLibrary>java8</dateLibrary>
-                                <delegatePattern>true</delegatePattern>
-                            </configOptions>
-                            <generateApis>true</generateApis>
-                            <generateApiDocumentation>false</generateApiDocumentation>
-                            <generateApiTests>false</generateApiTests>
-                            <generateModelDocumentation>false</generateModelDocumentation>
-                            <generateModelTests>false</generateModelTests>
                             <generateModels>false</generateModels>
-                            <generateSupportingFiles>false</generateSupportingFiles>
                             <inputSpec>src/main/resources/swagger.yaml</inputSpec>
                             <modelPackage>com.example.hibernate.entity</modelPackage>
                             <apiPackage>com.example.generatebyswagger.api</apiPackage>
+                            <ignoreFileOverride>src/main/resources/.swagger-codegen-ignore</ignoreFileOverride>
                             <language>spring</language>
-                            <library>spring-boot</library>
                         </configuration>
                     </execution>
                 </executions>
