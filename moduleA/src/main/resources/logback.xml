@@ -14,8 +14,7 @@
 
 
     <logger name="org.apache.shiro" level="debug"/>
-    <logger name="com.vaadin" level="debug"/>
-    <logger name="org.postgresql.ds.common" level="debug"/>
+    <logger name="org.hibernate" level="debug"/>
 
 
     <root level="info">

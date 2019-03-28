@@ -1,15 +1,16 @@
 package com.example.hibernate.entity;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "data")
 public class Data {
     @Id
-    private int id;
+    @SequenceGenerator(name = "global_seq", sequenceName = "global_seq", allocationSize = 1, initialValue = 100000)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
+    private Integer id;
 
     @Column(name = "data1", nullable = false)
     private String data1;
@@ -57,5 +58,10 @@ public class Data {
                 ", data1='" + data1 + '\'' +
                 ", data2='" + data2 + '\'' +
                 '}';
+    }
+
+    @JsonIgnore
+    public boolean isPersisted() {
+        return id != null;
     }
 }

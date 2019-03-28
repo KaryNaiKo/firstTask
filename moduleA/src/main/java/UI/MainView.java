@@ -8,18 +8,34 @@ import com.vaadin.ui.components.grid.ItemClickListener;
 import com.example.hibernate.dao.DataDAO;
 
 
+import java.util.Iterator;
 import java.util.List;
 
 public class MainView extends VerticalLayout implements View {
     private DataDAO dataDAO = DataDAO.getInstance();
+    private Grid<Data> grid = new Grid<>();
 
     public MainView() {
-        init();
-    }
-
-    private void init() {
         setSizeFull();
         setSpacing(false);
+
+        initTop();
+        initMain();
+    }
+
+    private void initTop() {
+        HorizontalLayout layout = new HorizontalLayout();
+        layout.setWidth("100%");
+
+        Button addCustomerBtn = new Button("Add new Data");
+        addCustomerBtn.addClickListener(e -> {
+            grid.asSingleSelect().clear();
+            DataForm form = new DataForm(this);
+            form.setData(new Data());
+            addWindow("Add new data", form);
+        });
+        layout.addComponent(addCustomerBtn);
+        layout.setComponentAlignment(addCustomerBtn, Alignment.MIDDLE_LEFT);
 
         Button send = new Button("Logout");
         send.addClickListener((Button.ClickListener) event -> {
@@ -28,14 +44,14 @@ public class MainView extends VerticalLayout implements View {
             Page.getCurrent().reload();
         });
 
-        addComponent(send);
-        setComponentAlignment(send, Alignment.TOP_RIGHT);
-        setExpandRatio(send, 0.1f);
+        layout.addComponent(send);
+        layout.setComponentAlignment(send, Alignment.MIDDLE_RIGHT);
 
-        List<Data> dataList = dataDAO.getData();
+        addComponent(layout);
+        setExpandRatio(layout, 0.1f);
+    }
 
-        Grid<Data> grid = new Grid<>();
-        grid.setItems(dataList);
+    private void initMain() {
         grid.addColumn(Data::getId).setCaption("Id");
         grid.addColumn(Data::getData1).setCaption("Data1");
         grid.addColumn(Data::getData2).setCaption("Data2");
@@ -45,23 +61,32 @@ public class MainView extends VerticalLayout implements View {
 
         grid.addItemClickListener((ItemClickListener<Data>) event -> {
             if (event.getMouseEventDetails().isDoubleClick()) {
-                // Create a sub-window and set the content
-                Window subWindow = new Window("Sub-window");
-                VerticalLayout subContent = new VerticalLayout();
-                subWindow.setContent(subContent);
-
-                // Put some components in it
-                subContent.addComponent(new Label("Value: " + event.getItem()));
-
-                // Center it in the browser window
-                subWindow.center();
-
-                // Open it in the UI
-                this.getUI().addWindow(subWindow);
+                DataForm form = new DataForm(this);
+                form.setData(event.getItem());
+                addWindow("Edit data", form);
             }
         });
 
         addComponent(grid);
         setExpandRatio(grid, 0.9f);
+        updateList();
+    }
+
+    public void updateList() {
+        List<Data> customers = dataDAO.getData();
+        grid.setItems(customers);
+    }
+
+    private void addWindow(String s, Component form) {
+        closeAllWindow();
+
+        Window editWindow = new Window(s);
+        editWindow.setContent(form);
+        editWindow.center();
+        this.getUI().addWindow(editWindow);
+    }
+
+    private void closeAllWindow() {
+        for (Window window : getUI().getWindows()) getUI().removeWindow(window);
     }
 }
