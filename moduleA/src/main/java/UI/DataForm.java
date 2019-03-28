@@ -45,6 +45,7 @@ public class DataForm extends FormLayout {
     public void setData(Data data) {
         this.data = data;
         binder.setBean(data);
+        delete.setVisible(data.isPersisted());
         dataTxt1.selectAll();
     }
 
