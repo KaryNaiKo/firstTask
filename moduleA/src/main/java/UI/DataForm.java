@@ -56,6 +56,7 @@ public class DataForm extends FormLayout {
     }
 
     private void save() {
+        binder.validate();
         if(binder.isValid()) {
             if (data.isPersisted()) {
                 dataDAO.update(data);
