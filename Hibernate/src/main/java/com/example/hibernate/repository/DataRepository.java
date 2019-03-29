@@ -26,7 +26,6 @@ public class DataRepository {
     }
 
     public List<Data> getData() {
-        em.clear();
         return em.createQuery("From Data").getResultList();
     }
 
@@ -51,5 +50,9 @@ public class DataRepository {
         em.merge(data);
         em.flush();
         em.getTransaction().commit();
+    }
+
+    public void clear() {
+        em.clear();
     }
 }
