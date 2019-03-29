@@ -13,7 +13,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <properties>
-        <hibernate.version>5.4.1.Final</hibernate.version>
+        <hibernate.version>5.4.2.Final</hibernate.version>
+        <hibernate.annotations.version>3.5.6-Final</hibernate.annotations.version>
         <postgresql.version>42.2.5</postgresql.version>
     </properties>
 
@@ -23,6 +24,16 @@
             <artifactId>hibernate-core</artifactId>
             <version>${hibernate.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-entitymanager</artifactId>
+            <version>${hibernate.version}</version>
+        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.hibernate</groupId>-->
+<!--            <artifactId>hibernate-annotations</artifactId>-->
+<!--            <version>${hibernate.annotations.version}</version>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>org.postgresql</groupId>

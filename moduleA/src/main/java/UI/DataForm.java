@@ -1,6 +1,6 @@
 package UI;
 
-import com.example.hibernate.dao.DataDAO;
+import com.example.hibernate.repository.DataRepository;
 import com.example.hibernate.entity.Data;
 import com.vaadin.data.Binder;
 import com.vaadin.event.ShortcutAction;
@@ -14,7 +14,7 @@ public class DataForm extends FormLayout {
     private Button save = new Button("Save");
     private Button delete = new Button("Delete");
 
-    private DataDAO dataDAO = DataDAO.getInstance();
+    private DataRepository dataRepository = DataRepository.getInstance();
     private Data data;
     private MainView view;
     private Binder<Data> binder = new Binder<>(Data.class);
@@ -50,7 +50,7 @@ public class DataForm extends FormLayout {
     }
 
     private void delete() {
-        dataDAO.delete(data);
+        dataRepository.delete(data);
         view.updateList();
         closeWindow();
     }
@@ -59,9 +59,9 @@ public class DataForm extends FormLayout {
         binder.validate();
         if(binder.isValid()) {
             if (data.isPersisted()) {
-                dataDAO.update(data);
+                dataRepository.update(data);
             } else {
-                dataDAO.save(data);
+                dataRepository.save(data);
             }
             view.updateList();
             closeWindow();

@@ -5,14 +5,13 @@ import com.vaadin.navigator.View;
 import com.vaadin.server.Page;
 import com.vaadin.ui.*;
 import com.vaadin.ui.components.grid.ItemClickListener;
-import com.example.hibernate.dao.DataDAO;
+import com.example.hibernate.repository.DataRepository;
 
 
-import java.util.Iterator;
 import java.util.List;
 
 public class MainView extends VerticalLayout implements View {
-    private DataDAO dataDAO = DataDAO.getInstance();
+    private DataRepository dataRepository = DataRepository.getInstance();
     private Grid<Data> grid = new Grid<>();
 
     public MainView() {
@@ -73,7 +72,7 @@ public class MainView extends VerticalLayout implements View {
     }
 
     public void updateList() {
-        List<Data> customers = dataDAO.getData();
+        List<Data> customers = dataRepository.getData();
         grid.setItems(customers);
     }
 

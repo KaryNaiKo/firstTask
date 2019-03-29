@@ -2,13 +2,13 @@ package auth;
 
 
 import com.example.hibernate.entity.User;
-import com.example.hibernate.dao.UserDAO;
+import com.example.hibernate.repository.UserRepository;
 import org.apache.shiro.authc.*;
 import org.apache.shiro.subject.SimplePrincipalCollection;
 
 
 public class TestAuth implements Authenticator {
-    private UserDAO userDAO = UserDAO.getInstance();
+    private UserRepository userRepository = UserRepository.getInstance();
 
     @Override
     public AuthenticationInfo authenticate(AuthenticationToken authenticationToken) throws AuthenticationException {
@@ -21,7 +21,7 @@ public class TestAuth implements Authenticator {
         User user = null;
         SimpleAuthenticationInfo ret = new SimpleAuthenticationInfo();
         try {
-            user = userDAO.authUser(login, password);
+            user = userRepository.authUser(login, password);
         } catch (Exception e) {
         }
         ret.setPrincipals(new SimplePrincipalCollection(user, "client"));
