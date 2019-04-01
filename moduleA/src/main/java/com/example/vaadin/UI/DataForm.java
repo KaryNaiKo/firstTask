@@ -1,4 +1,4 @@
-package UI;
+package com.example.vaadin.UI;
 
 import com.example.hibernate.repository.DataRepository;
 import com.example.hibernate.entity.Data;
@@ -52,7 +52,7 @@ public class DataForm extends FormLayout {
     private void delete() {
         dataRepository.delete(data);
         view.updateList();
-        closeWindow();
+        view.closeAllWindow();
     }
 
     private void save() {
@@ -64,12 +64,7 @@ public class DataForm extends FormLayout {
                 dataRepository.save(data);
             }
             view.updateList();
-            closeWindow();
+            view.closeAllWindow();
         }
-    }
-
-    private void closeWindow() {
-        ArrayList<Window> windows = new ArrayList<>(view.getUI().getWindows());
-        windows.get(windows.size()-1).close();
     }
 }

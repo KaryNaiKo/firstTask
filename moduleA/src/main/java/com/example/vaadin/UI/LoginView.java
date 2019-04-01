@@ -1,4 +1,4 @@
-package UI;
+package com.example.vaadin.UI;
 
 import com.vaadin.navigator.View;
 import com.vaadin.ui.*;

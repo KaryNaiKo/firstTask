@@ -1,4 +1,4 @@
-package auth;
+package com.example.vaadin.auth;
 
 
 import com.example.hibernate.entity.User;

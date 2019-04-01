@@ -26,7 +26,13 @@ public class DataRepository {
     }
 
     public List<Data> getData() {
-        return em.createQuery("From Data").getResultList();
+        return getData("");
+    }
+
+    public List<Data> getData(String filter) {
+        return em.createQuery("SELECT d FROM Data d WHERE d.data1 LIKE CONCAT('%', :filter, '%') OR d.data2 LIKE CONCAT('%', :filter, '%')")
+                .setParameter("filter", filter)
+                .getResultList();
     }
 
 

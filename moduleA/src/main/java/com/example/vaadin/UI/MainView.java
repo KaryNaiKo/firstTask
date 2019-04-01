@@ -1,11 +1,14 @@
-package UI;
+package com.example.vaadin.UI;
 
 import com.example.hibernate.entity.Data;
 import com.vaadin.navigator.View;
+import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
+import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
 import com.vaadin.ui.components.grid.ItemClickListener;
 import com.example.hibernate.repository.DataRepository;
+import com.vaadin.ui.themes.ValoTheme;
 
 
 import java.util.List;
@@ -13,6 +16,7 @@ import java.util.List;
 public class MainView extends VerticalLayout implements View {
     private DataRepository dataRepository = DataRepository.getInstance();
     private Grid<Data> grid = new Grid<>();
+    private TextField filterText = new TextField();
 
     public MainView() {
         setSizeFull();
@@ -26,6 +30,21 @@ public class MainView extends VerticalLayout implements View {
         HorizontalLayout layout = new HorizontalLayout();
         layout.setWidth("100%");
 
+        filterText.setPlaceholder("filter by name...");
+        filterText.addValueChangeListener(e -> updateList());
+        filterText.setValueChangeMode(ValueChangeMode.LAZY);
+
+        Button clearFilterTextBtn = new Button(FontAwesome.TIMES);
+        clearFilterTextBtn.setDescription("Clear the current filter");
+        clearFilterTextBtn.addClickListener(e -> filterText.clear());
+
+        CssLayout filtering = new CssLayout();
+        filtering.addComponents(filterText, clearFilterTextBtn);
+        filtering.setStyleName(ValoTheme.LAYOUT_COMPONENT_GROUP);
+
+        layout.addComponent(filtering);
+        layout.setExpandRatio(filtering, 1);
+
         Button addCustomerBtn = new Button("Add new Data");
         addCustomerBtn.addClickListener(e -> {
             grid.asSingleSelect().clear();
@@ -34,7 +53,7 @@ public class MainView extends VerticalLayout implements View {
             addWindow("Add new data", form);
         });
         layout.addComponent(addCustomerBtn);
-        layout.setComponentAlignment(addCustomerBtn, Alignment.MIDDLE_LEFT);
+        layout.setExpandRatio(addCustomerBtn, 1);
 
         Button send = new Button("Logout");
         send.addClickListener((Button.ClickListener) event -> {
@@ -45,6 +64,8 @@ public class MainView extends VerticalLayout implements View {
 
         layout.addComponent(send);
         layout.setComponentAlignment(send, Alignment.MIDDLE_RIGHT);
+        layout.setExpandRatio(send, 5);
+
 
         addComponent(layout);
         setExpandRatio(layout, 0.1f);
@@ -72,7 +93,7 @@ public class MainView extends VerticalLayout implements View {
     }
 
     public void updateList() {
-        List<Data> customers = dataRepository.getData();
+        List<Data> customers = dataRepository.getData(filterText.getValue());
         grid.setItems(customers);
     }
 
@@ -85,7 +106,7 @@ public class MainView extends VerticalLayout implements View {
         this.getUI().addWindow(editWindow);
     }
 
-    private void closeAllWindow() {
+    public void closeAllWindow() {
         for (Window window : getUI().getWindows()) getUI().removeWindow(window);
     }
 }

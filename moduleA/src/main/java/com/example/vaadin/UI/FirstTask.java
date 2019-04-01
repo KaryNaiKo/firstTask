@@ -1,4 +1,4 @@
-package UI;
+package com.example.vaadin.UI;
 
 import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.VaadinServletConfiguration;
