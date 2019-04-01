@@ -1,5 +1,6 @@
 package com.example.vaadin.UI;
 
+import com.example.vaadin.auth.SecurityUtil;
 import com.vaadin.navigator.View;
 import com.vaadin.ui.*;
 import org.apache.shiro.authc.AuthenticationException;
@@ -31,7 +32,7 @@ public class LoginView extends VerticalLayout implements View {
 
                 try {
                     currentUser.login(token);
-                    this.getUI().getNavigator().navigateTo(FirstTask.MAINVIEW);
+                    this.getUI().getNavigator().navigateTo(Main.MAINVIEW);
                 } catch (AuthenticationException e) {
                     Notification.show("Incorrect data");
                 }

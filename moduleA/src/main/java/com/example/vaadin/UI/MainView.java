@@ -1,6 +1,7 @@
 package com.example.vaadin.UI;
 
 import com.example.hibernate.entity.Data;
+import com.example.vaadin.auth.SecurityUtil;
 import com.vaadin.navigator.View;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.server.Page;
@@ -58,7 +59,7 @@ public class MainView extends VerticalLayout implements View {
         Button send = new Button("Logout");
         send.addClickListener((Button.ClickListener) event -> {
             SecurityUtil.getCurrentUser().logout();
-            this.getUI().getNavigator().navigateTo(FirstTask.LOGIN);
+            this.getUI().getNavigator().navigateTo(Main.LOGIN);
             Page.getCurrent().reload();
         });
 

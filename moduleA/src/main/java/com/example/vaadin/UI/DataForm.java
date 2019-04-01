@@ -51,7 +51,7 @@ public class DataForm extends FormLayout {
 
     private void delete() {
         dataRepository.delete(data);
-        view.updateList();
+        Broadcaster.broadcast();
         view.closeAllWindow();
     }
 
@@ -63,7 +63,7 @@ public class DataForm extends FormLayout {
             } else {
                 dataRepository.save(data);
             }
-            view.updateList();
+            Broadcaster.broadcast();
             view.closeAllWindow();
         }
     }

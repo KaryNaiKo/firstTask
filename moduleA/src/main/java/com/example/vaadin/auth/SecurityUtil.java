@@ -1,4 +1,4 @@
-package com.example.vaadin.UI;
+package com.example.vaadin.auth;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;

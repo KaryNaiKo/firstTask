@@ -1,10 +1,14 @@
 package com.example.vaadin.UI;
 
+import com.example.vaadin.auth.SecurityUtil;
 import com.vaadin.annotations.PreserveOnRefresh;
+import com.vaadin.annotations.Push;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.*;
+import com.vaadin.shared.communication.PushMode;
+import com.vaadin.shared.ui.ui.Transport;
 import com.vaadin.ui.UI;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.config.IniSecurityManagerFactory;
@@ -25,27 +29,31 @@ import java.io.IOException;
 import java.lang.invoke.MethodHandle;
 import java.lang.invoke.MethodHandles;
 import java.lang.invoke.MethodType;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
+@Push(transport= Transport.STREAMING)
 @PreserveOnRefresh
-public class FirstTask extends UI {
+public class Main extends UI implements Broadcaster.BroadcastListener {
     static {
         SLF4JBridgeHandler.install();
     }
 
-    private final static Logger logger = Logger.getLogger(FirstTask.class.getName());
+    private final static Logger logger = Logger.getLogger(Main.class.getName());
 
     private Navigator navigator;
+    private LoginView loginView = new LoginView();
+    private MainView mainView = new MainView();
 
     protected static final String MAINVIEW = "main";
     protected static final String LOGIN = "login";
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {
+        Broadcaster.register(this);
+
         navigator = new Navigator(this, this);
 
-        LoginView loginView = new LoginView();
-        MainView mainView = new MainView();
         navigator.addView(LOGIN, loginView);
         navigator.addView(MAINVIEW, mainView);
         navigator.setErrorView(loginView);
@@ -67,10 +75,32 @@ public class FirstTask extends UI {
                 }
             }
         });
+
+        logger.log(Level.INFO, "Init new " + this.toString());
+    }
+
+    @Override
+    public void detach() {
+        Broadcaster.unregister(this);
+        super.detach();
+    }
+
+    @Override
+    public void receiveBroadcast() {
+        this.access(new Runnable() {
+                   @Override
+                   public void run() {
+                       if (navigator.getCurrentView().equals(mainView)) {
+                           mainView.updateList();
+                           logger.log(Level.INFO, "update grid to " + mainView.toString());
+                       }
+                   }
+               }
+        );
     }
 
     @WebServlet(urlPatterns = "/*", name = "MyUIServlet", asyncSupported = true)
-    @VaadinServletConfiguration(ui = FirstTask.class, productionMode = true, heartbeatInterval = 30, closeIdleSessions = true)
+    @VaadinServletConfiguration(ui = Main.class, productionMode = true, heartbeatInterval = 30, closeIdleSessions = true)
     public static class MyUIServlet extends VaadinServlet implements SessionDestroyListener {
         private ShiroFilter filter;
         private MethodHandle mm;
