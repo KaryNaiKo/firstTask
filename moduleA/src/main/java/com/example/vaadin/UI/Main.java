@@ -32,7 +32,7 @@ import java.lang.invoke.MethodType;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-@Push(transport= Transport.STREAMING)
+@Push(transport= Transport.LONG_POLLING)
 @PreserveOnRefresh
 public class Main extends UI implements Broadcaster.BroadcastListener {
     static {

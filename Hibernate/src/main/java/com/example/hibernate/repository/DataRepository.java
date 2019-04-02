@@ -4,6 +4,10 @@ import com.example.hibernate.JPAUtil;
 import com.example.hibernate.entity.Data;
 
 import javax.persistence.EntityManager;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 public class DataRepository {
@@ -35,6 +39,19 @@ public class DataRepository {
                 .getResultList();
     }
 
+    public List<Data> getDataWithCriteria(String filter) {
+        CriteriaBuilder builder = em.getCriteriaBuilder();
+        CriteriaQuery<Data> query = builder.createQuery(Data.class);
+
+        Root<Data> root = query.from(Data.class);
+        query.select(root);
+
+        Predicate predicate1 = builder.like(root.get("data1"), "%" + filter + "%");
+        Predicate predicate2 = builder.like(root.get("data2"), "%" + filter + "%");
+        query.where(builder.or(predicate1, predicate2));
+
+        return em.createQuery(query).getResultList();
+    }
 
     public void delete(Data data) {
         em.getTransaction().begin();

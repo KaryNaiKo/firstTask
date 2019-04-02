@@ -94,7 +94,7 @@ public class MainView extends VerticalLayout implements View {
     }
 
     public void updateList() {
-        List<Data> customers = dataRepository.getData(filterText.getValue());
+        List<Data> customers = dataRepository.getDataWithCriteria(filterText.getValue());
         grid.setItems(customers);
     }
 

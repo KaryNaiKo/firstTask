@@ -9,12 +9,12 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class DataService  {
+public class DataService {
     private DataRepository dataRepository = DataRepository.getInstance();
 
     public ResponseEntity<List<Data>> getData() {
         dataRepository.clear();
-        List<Data> dataList = dataRepository.getData();
+        List<Data> dataList = dataRepository.getDataWithCriteria("");
         return new ResponseEntity<>(dataList, HttpStatus.OK);
     }
 }
