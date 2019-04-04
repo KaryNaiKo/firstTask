@@ -1,5 +1,5 @@
 **/Swagger2SpringBoot.java
-**/.swagger-codegen-ignore
+**/*.swagger-codegen-ignore
 **/pom.xml
 **/README.md
 **/application.properties
