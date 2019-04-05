@@ -11,6 +11,7 @@
         <module>moduleA</module>
         <module>moduleB</module>
         <module>Hibernate</module>
+        <module>jedis</module>
     </modules>
     <packaging>pom</packaging>
     <name>firstTask</name>

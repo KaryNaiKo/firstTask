@@ -1,6 +1,7 @@
 package com.example.vaadin.UI;
 
 import com.example.hibernate.entity.Data;
+import com.example.jedis.JedisUtil;
 import com.example.vaadin.auth.SecurityUtil;
 import com.vaadin.navigator.View;
 import com.vaadin.server.FontAwesome;
@@ -16,6 +17,7 @@ import java.util.List;
 
 public class MainView extends VerticalLayout implements View {
     private DataRepository dataRepository = DataRepository.getInstance();
+    private JedisUtil jedis = JedisUtil.getJedisUtil();
     private Grid<Data> grid = new Grid<>();
     private TextField filterText = new TextField();
 
@@ -73,6 +75,21 @@ public class MainView extends VerticalLayout implements View {
     }
 
     private void initMain() {
+        HorizontalLayout content = new HorizontalLayout();
+        Label label = new Label("To jedis");
+        TextField toJedis = new TextField();
+
+
+        Button send = new Button("Send");
+        send.addClickListener((Button.ClickListener) event -> {
+            String str = toJedis.getValue();
+            jedis.add(str);
+            toJedis.clear();
+        });
+        content.addComponents(label, toJedis, send);
+        addComponent(content);
+        setExpandRatio(content, 0.1f);
+
         grid.addColumn(Data::getId).setCaption("Id");
         grid.addColumn(Data::getData1).setCaption("Data1");
         grid.addColumn(Data::getData2).setCaption("Data2");
@@ -89,7 +106,7 @@ public class MainView extends VerticalLayout implements View {
         });
 
         addComponent(grid);
-        setExpandRatio(grid, 0.9f);
+        setExpandRatio(grid, 0.8f);
         updateList();
     }
 

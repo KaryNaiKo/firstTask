@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.List;
+import java.util.Set;
 
 @Controller
 public class MainController implements GetDataApi {
@@ -25,7 +26,13 @@ public class MainController implements GetDataApi {
     }
 
     @GetMapping("/")
-    public String meals() {
+    public String home() {
         return "index.html";
+    }
+
+
+    @GetMapping(value = "/getDataFromJedis", produces = { "application/json" })
+    public ResponseEntity<Set<String>> getDataFromJedis() {
+        return service.getDataFromJedis();
     }
 }
