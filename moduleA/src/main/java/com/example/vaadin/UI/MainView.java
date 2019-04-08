@@ -86,7 +86,11 @@ public class MainView extends VerticalLayout implements View {
             jedis.add(str);
             toJedis.clear();
         });
-        content.addComponents(label, toJedis, send);
+
+        Button load = new Button("Load file");
+        load.addClickListener((Button.ClickListener) event -> addWindow("Load file", new LoadFileForm()));
+
+        content.addComponents(label, toJedis, send, load);
         addComponent(content);
         setExpandRatio(content, 0.1f);
 
