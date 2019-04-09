@@ -1,0 +1,94 @@
+package com.example.vaadin.model;
+
+
+import com.example.hibernate.entity.Data;
+import com.example.vaadin.UI.LoadFileForm;
+import com.vaadin.server.Page;
+import com.vaadin.ui.Notification;
+import com.vaadin.ui.Upload;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
+public class XLSXReceiver implements Upload.Receiver, Upload.FailedListener, Upload.SucceededListener {
+    private File file;
+    private LoadFileForm form;
+
+    public XLSXReceiver(LoadFileForm form) {
+        this.form = form;
+    }
+
+    @Override
+    public OutputStream receiveUpload(String filename, String mimeType) {
+        if (!filename.endsWith(".xlsx")) {
+            new Notification("Not allowed file extension ", Notification.Type.ERROR_MESSAGE).show(Page.getCurrent());
+            return null;
+        }
+
+        BufferedOutputStream outputStream = null;
+        try {
+            file = File.createTempFile("tempExcel", ".tmp");
+            outputStream = new BufferedOutputStream(new FileOutputStream(file));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return outputStream;
+    }
+
+    @Override
+    public void uploadSucceeded(Upload.SucceededEvent event) {
+        List<Data> list = readFile();
+        form.insertDataToGrid(list);
+        file.delete();
+    }
+
+    @Override
+    public void uploadFailed(Upload.FailedEvent event) {
+        file.delete();
+    }
+
+
+    private List<Data> readFile() {
+        FileInputStream fileInputStream = null;
+        List<Data> list = new ArrayList<>();
+        try {
+            XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(file));
+            XSSFSheet sheet = workbook.getSheetAt(0);
+
+            for (Row row : sheet) {
+                if (row.getRowNum() == 0) {
+                    checkHeader(row);
+                } else {
+                    Data data = getData(row);
+                    list.add(data);
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    private Data getData(Row row) {
+        int id = (int) row.getCell(0).getNumericCellValue();
+        String data1 = row.getCell(1).getStringCellValue();
+        String data2 = row.getCell(2).getStringCellValue();
+
+        return new Data(id, data1, data2);
+    }
+
+    private void checkHeader(Row row) throws IOException {
+        String id = row.getCell(0).getStringCellValue();
+        String data1 = row.getCell(1).getStringCellValue();
+        String data2 = row.getCell(2).getStringCellValue();
+        if(!id.toLowerCase().equals("id") || !data1.toLowerCase().equals("data1") || !data2.toLowerCase().equals("data2")) {
+            new Notification("Could not read file", Notification.Type.ERROR_MESSAGE).show(Page.getCurrent());
+            throw new IOException();
+        }
+    }
+}

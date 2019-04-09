@@ -7,7 +7,6 @@ import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;
 import com.vaadin.server.*;
-import com.vaadin.shared.communication.PushMode;
 import com.vaadin.shared.ui.ui.Transport;
 import com.vaadin.ui.UI;
 import org.apache.shiro.SecurityUtils;
@@ -45,8 +44,8 @@ public class Main extends UI implements Broadcaster.BroadcastListener {
     private LoginView loginView = new LoginView();
     private MainView mainView = new MainView();
 
-    protected static final String MAINVIEW = "main";
-    protected static final String LOGIN = "login";
+    public static final String MAINVIEW = "main";
+    public static final String LOGIN = "login";
 
     @Override
     protected void init(VaadinRequest vaadinRequest) {

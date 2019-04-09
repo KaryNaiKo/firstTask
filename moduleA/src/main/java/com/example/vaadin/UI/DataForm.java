@@ -6,7 +6,6 @@ import com.vaadin.data.Binder;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;
 import com.vaadin.ui.themes.ValoTheme;
-import java.util.ArrayList;
 
 public class DataForm extends FormLayout {
     private TextField dataTxt1 = new TextField("Data1");
