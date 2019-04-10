@@ -12,7 +12,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class XLSXReceiver implements Upload.Receiver, Upload.FailedListener, Upload.SucceededListener {
@@ -54,7 +53,6 @@ public class XLSXReceiver implements Upload.Receiver, Upload.FailedListener, Upl
 
 
     private List<Data> readFile() {
-        FileInputStream fileInputStream = null;
         List<Data> list = new ArrayList<>();
         try {
             XSSFWorkbook workbook = new XSSFWorkbook(new FileInputStream(file));
@@ -74,10 +72,18 @@ public class XLSXReceiver implements Upload.Receiver, Upload.FailedListener, Upl
         return list;
     }
 
-    private Data getData(Row row) {
-        int id = (int) row.getCell(0).getNumericCellValue();
-        String data1 = row.getCell(1).getStringCellValue();
-        String data2 = row.getCell(2).getStringCellValue();
+    private Data getData(Row row) throws IOException {
+        int id;
+        String data1;
+        String data2;
+        try {
+            id = (int) row.getCell(0).getNumericCellValue();
+            data1 = row.getCell(1).getStringCellValue();
+            data2 = row.getCell(2).getStringCellValue();
+        } catch (Exception e) {
+            new Notification("Could not read file. Corrupt data at line " + row.getRowNum(), Notification.Type.ERROR_MESSAGE).show(Page.getCurrent());
+            throw new IOException();
+        }
 
         return new Data(id, data1, data2);
     }
@@ -87,7 +93,7 @@ public class XLSXReceiver implements Upload.Receiver, Upload.FailedListener, Upl
         String data1 = row.getCell(1).getStringCellValue();
         String data2 = row.getCell(2).getStringCellValue();
         if(!id.toLowerCase().equals("id") || !data1.toLowerCase().equals("data1") || !data2.toLowerCase().equals("data2")) {
-            new Notification("Could not read file", Notification.Type.ERROR_MESSAGE).show(Page.getCurrent());
+            new Notification("Could not read file. Corrupt header.", Notification.Type.ERROR_MESSAGE).show(Page.getCurrent());
             throw new IOException();
         }
     }
