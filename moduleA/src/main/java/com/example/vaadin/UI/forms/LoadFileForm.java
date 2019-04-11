@@ -6,12 +6,14 @@ import com.example.vaadin.model.XLSXReceiver;
 import com.vaadin.server.Page;
 import com.vaadin.ui.*;
 
+import java.io.File;
 import java.util.List;
 
 public class LoadFileForm extends VerticalLayout {
     private final MainView view;
     private Grid<Data> grid = new Grid<>();
     private Button saveButton = new Button();
+    private XLSXReceiver receiver = new XLSXReceiver(this);
 
     public LoadFileForm(MainView view) {
         this.view = view;
@@ -20,7 +22,6 @@ public class LoadFileForm extends VerticalLayout {
     }
 
     public void init() {
-        XLSXReceiver receiver = new XLSXReceiver(this);
         Upload upload = new Upload();
         upload.setButtonCaption("Upload");
         upload.setReceiver(receiver);
@@ -37,6 +38,8 @@ public class LoadFileForm extends VerticalLayout {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 new Notification("File has been saved", Notification.Type.TRAY_NOTIFICATION).show(Page.getCurrent());
+                File file = receiver.getFile();
+                view.getTab2().addGridFile(file);
                 view.closeAllWindow();
             }
         });
@@ -53,5 +56,9 @@ public class LoadFileForm extends VerticalLayout {
 
     public void setButtonVisible(){
         saveButton.setVisible(true);
+    }
+
+    public void deleteFile() {
+        receiver.deleteFile();
     }
 }

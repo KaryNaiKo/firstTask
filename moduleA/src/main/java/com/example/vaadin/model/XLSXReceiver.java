@@ -3,6 +3,8 @@ package com.example.vaadin.model;
 
 import com.example.hibernate.entity.Data;
 import com.example.vaadin.UI.forms.LoadFileForm;
+import com.example.vaadin.UI.forms.Tab1Form;
+import com.example.vaadin.UI.forms.Tab2Form;
 import com.vaadin.server.Page;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Upload;
@@ -31,7 +33,7 @@ public class XLSXReceiver implements Upload.Receiver, Upload.FailedListener, Upl
 
         BufferedOutputStream outputStream = null;
         try {
-            file = File.createTempFile("tempExcel", ".tmp");
+            file = new File(Tab2Form.PATH_TO_FILES + "/TEMP" + filename);
             outputStream = new BufferedOutputStream(new FileOutputStream(file));
         } catch (IOException e) {
             e.printStackTrace();
@@ -44,12 +46,19 @@ public class XLSXReceiver implements Upload.Receiver, Upload.FailedListener, Upl
         List<Data> list = readFile();
         form.insertDataToGrid(list);
         form.setButtonVisible();
-        file.delete();
     }
 
     @Override
     public void uploadFailed(Upload.FailedEvent event) {
         file.delete();
+    }
+
+    public void deleteFile() {
+        file.delete();
+    }
+
+    public File getFile() {
+        return file;
     }
 
 
@@ -93,7 +102,7 @@ public class XLSXReceiver implements Upload.Receiver, Upload.FailedListener, Upl
         String id = row.getCell(0).getStringCellValue();
         String data1 = row.getCell(1).getStringCellValue();
         String data2 = row.getCell(2).getStringCellValue();
-        if(!id.toLowerCase().equals("id") || !data1.toLowerCase().equals("data1") || !data2.toLowerCase().equals("data2")) {
+        if (!id.toLowerCase().equals("id") || !data1.toLowerCase().equals("data1") || !data2.toLowerCase().equals("data2")) {
             new Notification("Could not read file. Corrupt header.", Notification.Type.ERROR_MESSAGE).show(Page.getCurrent());
             throw new IOException();
         }

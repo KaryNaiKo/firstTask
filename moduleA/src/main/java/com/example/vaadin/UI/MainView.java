@@ -72,15 +72,24 @@ public class MainView extends VerticalLayout implements View {
     }
 
     public void addWindow(String s, Component form) {
+        addWindow(s, form, null);
+    }
+
+    public void addWindow(String s, Component form, Window.CloseListener listener) {
         closeAllWindow();
 
         Window window = new Window(s);
         window.setContent(form);
         window.center();
+        if(listener != null) window.addCloseListener(listener);
         this.getUI().addWindow(window);
     }
 
     public void closeAllWindow() {
         for (Window window : getUI().getWindows()) getUI().removeWindow(window);
+    }
+
+    public Tab2Form getTab2() {
+        return tab2Form;
     }
 }
