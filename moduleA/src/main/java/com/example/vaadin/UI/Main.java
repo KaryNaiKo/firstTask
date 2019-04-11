@@ -3,6 +3,7 @@ package com.example.vaadin.UI;
 import com.example.vaadin.auth.SecurityUtil;
 import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.annotations.Push;
+import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.ViewChangeListener;
@@ -33,6 +34,7 @@ import java.util.logging.Logger;
 
 @Push(transport= Transport.LONG_POLLING)
 @PreserveOnRefresh
+@Theme("mytheme")
 public class Main extends UI implements Broadcaster.BroadcastListener {
     static {
         SLF4JBridgeHandler.install();

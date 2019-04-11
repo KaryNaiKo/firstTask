@@ -3,7 +3,9 @@ package com.example.vaadin.UI.forms;
 import com.example.hibernate.entity.Data;
 import com.example.hibernate.repository.DataRepository;
 import com.example.jedis.JedisUtil;
+import com.example.vaadin.UI.Broadcaster;
 import com.example.vaadin.UI.MainView;
+import com.vaadin.icons.VaadinIcons;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
@@ -12,10 +14,12 @@ import com.vaadin.ui.renderers.ComponentRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
 import java.util.List;
+import java.util.Set;
 
 public class Tab1Form extends VerticalLayout {
     private final MainView view;
     private DataRepository dataRepository = DataRepository.getInstance();
+    private Button delete = new Button("Delete");
 
     private Grid<Data> grid = new Grid<>();
     private TextField filterText = new TextField();
@@ -56,6 +60,11 @@ public class Tab1Form extends VerticalLayout {
         });
         layout.addComponent(addCustomerBtn);
 
+        delete.addClickListener(e -> this.delete());
+        delete.setIcon(VaadinIcons.TRASH);
+        delete.setStyleName("delete");
+        layout.addComponent(delete);
+
         addComponent(layout);
         setExpandRatio(layout, 0.1f);
     }
@@ -84,5 +93,15 @@ public class Tab1Form extends VerticalLayout {
     public void updateList() {
         List<Data> customers = dataRepository.getDataWithCriteria(filterText.getValue());
         grid.setItems(customers);
+    }
+
+    private void delete() {
+        Set<Data> selectedItems = grid.getSelectedItems();
+        if(!selectedItems.isEmpty()) {
+            for(Data data : selectedItems) {
+                dataRepository.delete(data);
+            }
+            Broadcaster.broadcast();
+        }
     }
 }

@@ -81,6 +81,8 @@ public class MainView extends VerticalLayout implements View {
         Window window = new Window(s);
         window.setContent(form);
         window.center();
+        window.setModal(true);
+        window.setResizable(false);
         if(listener != null) window.addCloseListener(listener);
         this.getUI().addWindow(window);
     }

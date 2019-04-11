@@ -49,6 +49,7 @@ public class DataRepository {
         Predicate predicate1 = builder.like(root.get("data1"), "%" + filter + "%");
         Predicate predicate2 = builder.like(root.get("data2"), "%" + filter + "%");
         query.where(builder.or(predicate1, predicate2));
+        query.orderBy(builder.asc(root.get("id")));
 
         return em.createQuery(query).getResultList();
     }

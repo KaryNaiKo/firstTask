@@ -13,7 +13,7 @@ public class DataForm extends FormLayout {
     private TextField dataTxt1 = new TextField("Data1");
     private TextField dataTxt2 = new TextField("Data2");
     private Button save = new Button("Save");
-    private Button delete = new Button("Delete");
+
 
     private DataRepository dataRepository = DataRepository.getInstance();
     private Data data;
@@ -22,11 +22,13 @@ public class DataForm extends FormLayout {
 
 
     public DataForm(MainView view) {
+        setMargin(true);
+
         this.view = view;
 
         setSizeUndefined();
-        HorizontalLayout buttons = new HorizontalLayout(save, delete);
-        addComponents(dataTxt1, dataTxt2, buttons);
+
+        addComponents(dataTxt1, dataTxt2, save);
 
         save.setStyleName(ValoTheme.BUTTON_PRIMARY);
         save.setClickShortcut(ShortcutAction.KeyCode.ENTER);
@@ -40,21 +42,16 @@ public class DataForm extends FormLayout {
                 .bind(Data::getData2, Data::setData2);
 
         save.addClickListener(e -> this.save());
-        delete.addClickListener(e -> this.delete());
+
     }
 
     public void setData(Data data) {
         this.data = data;
         binder.setBean(data);
-        delete.setVisible(data.isPersisted());
         dataTxt1.selectAll();
     }
 
-    private void delete() {
-        dataRepository.delete(data);
-        Broadcaster.broadcast();
-        view.closeAllWindow();
-    }
+
 
     private void save() {
         binder.validate();
