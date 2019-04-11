@@ -1,7 +1,9 @@
-package com.example.vaadin.UI;
+package com.example.vaadin.UI.forms;
 
 import com.example.hibernate.repository.DataRepository;
 import com.example.hibernate.entity.Data;
+import com.example.vaadin.UI.Broadcaster;
+import com.example.vaadin.UI.MainView;
 import com.vaadin.data.Binder;
 import com.vaadin.event.ShortcutAction;
 import com.vaadin.ui.*;

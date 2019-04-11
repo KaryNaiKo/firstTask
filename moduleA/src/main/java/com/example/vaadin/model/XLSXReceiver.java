@@ -2,7 +2,7 @@ package com.example.vaadin.model;
 
 
 import com.example.hibernate.entity.Data;
-import com.example.vaadin.UI.LoadFileForm;
+import com.example.vaadin.UI.forms.LoadFileForm;
 import com.vaadin.server.Page;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Upload;
@@ -43,6 +43,7 @@ public class XLSXReceiver implements Upload.Receiver, Upload.FailedListener, Upl
     public void uploadSucceeded(Upload.SucceededEvent event) {
         List<Data> list = readFile();
         form.insertDataToGrid(list);
+        form.setButtonVisible();
         file.delete();
     }
 
