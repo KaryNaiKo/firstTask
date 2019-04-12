@@ -2,10 +2,8 @@ package com.example.vaadin.UI.forms;
 
 import com.example.hibernate.entity.Data;
 import com.example.hibernate.repository.DataRepository;
-import com.example.jedis.JedisUtil;
-import com.example.vaadin.UI.Broadcaster;
 import com.example.vaadin.UI.MainView;
-import com.vaadin.icons.VaadinIcons;
+import com.example.vaadin.model.GridData;
 import com.vaadin.server.FontAwesome;
 import com.vaadin.shared.ui.ValueChangeMode;
 import com.vaadin.ui.*;
@@ -13,15 +11,13 @@ import com.vaadin.ui.components.grid.ItemClickListener;
 import com.vaadin.ui.renderers.ComponentRenderer;
 import com.vaadin.ui.themes.ValoTheme;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class Tab1Form extends VerticalLayout {
     private final MainView view;
     private DataRepository dataRepository = DataRepository.getInstance();
-    private Button delete = new Button("Delete");
-
-    private Grid<Data> grid = new Grid<>();
+    private Grid<GridData> grid = new Grid<>();
     private TextField filterText = new TextField();
 
     public Tab1Form(MainView view) {
@@ -60,11 +56,6 @@ public class Tab1Form extends VerticalLayout {
         });
         layout.addComponent(addCustomerBtn);
 
-        delete.addClickListener(e -> this.delete());
-        delete.setIcon(VaadinIcons.TRASH);
-        delete.setStyleName("delete");
-        layout.addComponent(delete);
-
         addComponent(layout);
         setExpandRatio(layout, 0.1f);
     }
@@ -73,14 +64,15 @@ public class Tab1Form extends VerticalLayout {
     private void initMain() {
         grid.setSizeFull();
 
-        grid.addColumn(Data::getId).setCaption("Id");
-        grid.addColumn(Data::getData1).setCaption("Data1");
-        grid.addColumn(Data::getData2).setCaption("Data2");
+        grid.addColumn(gridData -> gridData.getData().getId()).setCaption("Id");
+        grid.addColumn(gridData -> gridData.getData().getData1()).setCaption("Data1");
+        grid.addColumn(gridData -> gridData.getData().getData2()).setCaption("Data2");
+        grid.addColumn(gridData -> gridData.getButton(), new ComponentRenderer()).setCaption("Delete");
 
-        grid.addItemClickListener((ItemClickListener<Data>) event -> {
+        grid.addItemClickListener((ItemClickListener<GridData>) event -> {
             if (event.getMouseEventDetails().isDoubleClick()) {
                 DataForm form = new DataForm(view);
-                form.setData(event.getItem());
+                form.setData(event.getItem().getData());
                 view.addWindow("Edit data", form);
             }
         });
@@ -91,17 +83,16 @@ public class Tab1Form extends VerticalLayout {
     }
 
     public void updateList() {
-        List<Data> customers = dataRepository.getDataWithCriteria(filterText.getValue());
-        grid.setItems(customers);
+        List<Data> dataList = dataRepository.getDataWithCriteria(filterText.getValue());
+        List<GridData> gridDataList = getGridDataList(dataList);
+        grid.setItems(gridDataList);
     }
 
-    private void delete() {
-        Set<Data> selectedItems = grid.getSelectedItems();
-        if(!selectedItems.isEmpty()) {
-            for(Data data : selectedItems) {
-                dataRepository.delete(data);
-            }
-            Broadcaster.broadcast();
+    private List<GridData> getGridDataList(List<Data> dataList) {
+        List<GridData> list = new ArrayList<>();
+        for(Data data : dataList) {
+            list.add(new GridData(data, this));
         }
+        return list;
     }
 }

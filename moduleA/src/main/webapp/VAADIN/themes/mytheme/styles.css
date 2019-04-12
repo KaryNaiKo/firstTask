@@ -15210,3 +15210,7 @@ div.v-layout.v-horizontal.v-widget {
 	border-color: #f4505f;
 	border-radius: 4px;
 }
+
+.mytheme .v-loading-indicator {
+	visibility: hidden;
+}
