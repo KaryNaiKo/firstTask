@@ -11,7 +11,7 @@ import javax.persistence.criteria.Root;
 import java.util.List;
 
 public class DataRepository {
-    private static DataRepository instance;
+    private volatile static DataRepository instance;
     private EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
 
     private DataRepository() {

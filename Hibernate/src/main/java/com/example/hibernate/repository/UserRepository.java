@@ -7,7 +7,7 @@ import org.hibernate.jpa.QueryHints;
 import javax.persistence.EntityManager;
 
 public class UserRepository {
-    private static UserRepository instance;
+    private volatile static UserRepository instance;
     private EntityManager em = JPAUtil.getEntityManagerFactory().createEntityManager();
 
     private UserRepository() {
@@ -26,16 +26,25 @@ public class UserRepository {
     }
 
     public User authUser(String login, String password) {
-        return em.createQuery("SELECT u FROM User u WHERE u.login=:login AND u.password=:password", User.class)
+        return em.createQuery("SELECT u FROM User u LEFT JOIN FETCH u.roles WHERE u.login=:login AND u.password=:password", User.class)
                 .setParameter("login", login)
                 .setParameter("password", password)
-                .getSingleResult();
+                .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
+//                .getSingleResult();
+                .getResultList().get(0);
     }
 
     public User authUser(String login) {
         return em.createQuery("SELECT u FROM User u WHERE u.login=:login", User.class)
                 .setParameter("login", login)
-                .setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false)
+
                 .getSingleResult();
+    }
+
+    public static void main(String[] args) {
+        UserRepository repository = new UserRepository();
+        User u = repository.authUser("admin", "password");
+        System.out.println(u);
+
     }
 }
